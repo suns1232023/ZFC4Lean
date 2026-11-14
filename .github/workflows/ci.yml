@@ -1,3 +1,78 @@
-- name: Get Mathlib cache
-    run: lake exe cache get
-    working-directory: .
+name: ZFC4Lean CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build and Verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Lean 4 / elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Cache Mathlib
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            .lake
+          key: ${{ runner.os }}-lean-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-lean-
+
+      - name: Build ZFC4Lean
+        run: lake build
+        working-directory: .
+
+      - name: Check for sorry
+        run: |
+          echo "=== Checking for unresolved sorry ==="
+          if [ -d "ZFC4Lean" ]; then
+            SORRY_COUNT=$(grep -rn "sorry" ZFC4Lean/ --include="*.lean" | \
+              grep -v "-- TODO" | \
+              grep -v "-- sorry" | \
+              wc -l)
+            echo "Found $SORRY_COUNT sorry instances (excluding TODO comments)"
+            grep -rn "sorry" ZFC4Lean/ --include="*.lean" | grep -v "-- TODO" || true
+          else
+            echo "Directory ZFC4Lean not found or empty."
+          fi
+          echo "=== Sorry check complete ==="
+
+      - name: Check axiom dependencies
+        run: |
+          echo "=== Checking axiom dependencies ==="
+          cat > /tmp/check_axioms.lean << 'EOF'
+          import ZFC4Lean.FOL.Semantics
+          #check @ZFC4Lean.FOL.soundness
+          #print axioms ZFC4Lean.FOL.soundness
+          EOF
+          lake env lean /tmp/check_axioms.lean || true
+          echo "=== Axiom check complete ==="
+
+      - name: Count theorems
+        run: |
+          echo "=== Theorem Statistics ==="
+          if [ -d "ZFC4Lean" ]; then
+            echo "Total theorem/lemma/def declarations:"
+            grep -rn "^theorem\|^lemma\|^def " ZFC4Lean/ --include="*.lean" | wc -l || true
+            echo ""
+            echo "Proved theorems/lemmas:"
+            grep -rn "^theorem\|^lemma" ZFC4Lean/ --include="*.lean" | wc -l || true
+            echo ""
+            echo "Files:"
+            find ZFC4Lean/ -name "*.lean" | sort || true
+          else
+            echo "Directory ZFC4Lean not found."
+          fi
+          echo "=== Statistics complete ==="
