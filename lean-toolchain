@@ -1,3 +1,1 @@
-git add lean-toolchain
-git commit -m "fix: correct lean-toolchain file content"
-git push origin main
+leanprover/lean4:v4.14.0
