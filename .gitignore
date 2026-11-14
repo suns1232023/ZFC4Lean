@@ -1,2 +1,23 @@
-# cache and other artifacts produced by Lean's Lake build tool
+# Lean build artifacts
 .lake/
+*.olean
+*.ilean
+*.trace
+*.c
+*.c.hash
+
+# Lake manifest (keep for reproducibility)
+# lake-manifest.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/settings.json
+.idea/
+*.swp
+*~
+
+# Scripts output
+scripts/*.olean
