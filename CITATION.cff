@@ -1,1 +1,60 @@
 
+cff-version: 1.2.0
+message: "If you use ZFC4Lean in your research, please cite it as below."
+type: software
+title: "ZFC4Lean: A Verified Axiomatic Foundation for Set Theory in Lean 4"
+abstract: >-
+  ZFC4Lean formalizes Zermelo-Fraenkel set theory with Choice (ZFC) as an
+  explicit first-order axiomatic system in Lean 4. The project provides a
+  Hilbert-style proof system, model-theoretic semantics with a machine-verified
+  soundness theorem, all 10 ZFC axioms as explicit first-order sentences, and
+  a formalization of the Continuum Hypothesis. The long-term goal is the first
+  Lean 4 machine-verified proof of CH independence.
+authors:
+  - name: "ZFC4Lean Contributors"
+repository-code: "https://github.com/ZFC4Lean/ZFC4Lean"
+license: Apache-2.0
+version: "0.1.0"
+date-released: "2026-11-13"
+keywords:
+  - lean4
+  - set-theory
+  - ZFC
+  - formal-verification
+  - continuum-hypothesis
+  - forcing
+  - constructible-universe
+  - interactive-theorem-proving
+  - mathematical-logic
+references:
+  - type: conference-paper
+    title: "A Formal Proof of the Independence of the Continuum Hypothesis"
+    authors:
+      - family-names: Han
+        given-names: Jesse Michael
+      - family-names: van Doorn
+        given-names: Floris
+    year: 2020
+    collection-title: "Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs (CPP 2020)"
+    pages: "353-366"
+    doi: "10.1145/3372885.3373826"
+  - type: article
+    title: "The consistency of the axiom of choice and of the generalized continuum hypothesis"
+    authors:
+      - family-names: Gödel
+        given-names: Kurt
+    year: 1938
+    journal: "Proceedings of the National Academy of Sciences"
+    volume: 24
+    issue: 12
+    pages: "556-557"
+  - type: article
+    title: "The independence of the continuum hypothesis"
+    authors:
+      - family-names: Cohen
+        given-names: Paul J.
+    year: 1963
+    journal: "Proceedings of the National Academy of Sciences"
+    volume: 50
+    issue: 6
+    pages: "1143-1148"
