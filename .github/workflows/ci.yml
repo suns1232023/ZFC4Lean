@@ -1,0 +1,3 @@
+- name: Get Mathlib cache
+    run: lake exe cache get
+    working-directory: .
